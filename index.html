@@ -1,0 +1,1443 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KARSEB - Inmobiliaria</title>
+    <link rel="icon" type="image/png" href="https://res.cloudinary.com/dh7zke3v6/image/upload/v1756482555/logokarseb_m03rt8.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'karseb-orange': '#FF6B35',
+                        'karseb-gray': '#4A5568',
+                        'karseb-light-gray': '#E2E8F0'
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'slide-up': 'slideUp 0.8s ease-out',
+                        'fade-in': 'fadeIn 1s ease-out',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'bounce-slow': 'bounce 2s infinite',
+                        'gradient': 'gradient 8s ease infinite',
+                        'pulse-glow': 'pulseGlow 2s ease-in-out infinite',
+                        'bounce-phone': 'bouncePhone 1s ease-in-out infinite',
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+        
+        body { 
+            font-family: 'Inter', sans-serif; 
+            overflow-x: hidden;
+        }
+        
+        .hero-gradient {
+            background: linear-gradient(-45deg, #FF6B35, #4A5568, #FF8A65, #2D3748);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+        }
+        
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes pulseGlow {
+            0%, 100% { 
+                box-shadow: 0 0 20px rgba(255, 107, 53, 0.4);
+                transform: scale(1);
+            }
+            50% { 
+                box-shadow: 0 0 40px rgba(255, 107, 53, 0.8);
+                transform: scale(1.05);
+            }
+        }
+        
+        @keyframes bouncePhone {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            25% { transform: translateY(-5px) rotate(-5deg); }
+            75% { transform: translateY(-3px) rotate(5deg); }
+        }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .card-hover {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+        }
+        
+        .property-card {
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        
+        .property-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #FF6B35, #4A5568);
+        }
+        
+        .neon-glow {
+            box-shadow: 0 0 20px rgba(255, 107, 53, 0.3);
+        }
+        
+        .text-gradient {
+            background: linear-gradient(135deg, #FF6B35, #4A5568);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .morphing-blob {
+            border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+            animation: morph 8s ease-in-out infinite;
+        }
+        
+        @keyframes morph {
+            0% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+            50% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
+            100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+        }
+        
+        .floating-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        
+        .floating-elements::before,
+        .floating-elements::after {
+            content: '';
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 107, 53, 0.1);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .floating-elements::before {
+            top: 10%;
+            left: 10%;
+            animation-delay: -2s;
+        }
+        
+        .floating-elements::after {
+            bottom: 10%;
+            right: 10%;
+            animation-delay: -4s;
+        }
+        
+        .scroll-indicator {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #FF6B35, #4A5568);
+            transform-origin: left;
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+            z-index: 9999;
+        }
+        
+        .section-reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease;
+        }
+        
+        .section-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .interactive-button {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .interactive-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .interactive-button:hover::before {
+            left: 100%;
+        }
+        
+        .typing-animation {
+            overflow: hidden;
+            border-right: 3px solid #FF6B35;
+            white-space: nowrap;
+            animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+        
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+        
+        @keyframes blink-caret {
+            from, to { border-color: transparent; }
+            50% { border-color: #FF6B35; }
+        }
+        
+        .particle-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 107, 53, 0.6);
+            border-radius: 50%;
+            animation: particle-float 10s infinite linear;
+        }
+        
+        @keyframes particle-float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .contact-card {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            transition: all 0.4s ease;
+        }
+        
+        .contact-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+        }
+        
+        .phone-button {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .phone-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        
+        .phone-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .phone-button:hover::before {
+            left: 100%;
+        }
+
+        .whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        /* JavaScript Classes */
+        .property-manager {
+            position: relative;
+        }
+
+        .search-active {
+            transform: scale(1.02);
+            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.2);
+        }
+
+        .form-success {
+            background: linear-gradient(135deg, #10B981, #059669);
+            color: white;
+        }
+
+        .notification {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: white;
+            border-left: 4px solid #FF6B35;
+            padding: 16px 20px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(10px);
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            background: white;
+            border-radius: 24px;
+            padding: 32px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: translate(-50%, -50%) scale(1);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Scroll Progress Indicator -->
+    <div class="scroll-indicator" id="scrollIndicator"></div>
+    
+    <!-- Header -->
+    <header class="glass-effect fixed top-0 w-full z-50 transition-all duration-300" id="header">
+        <nav class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3 animate-fade-in">
+                    <div class="w-12 h-12 rounded-2xl overflow-hidden neon-glow bg-white p-1">
+                        <img src="https://res.cloudinary.com/dh7zke3v6/image/upload/v1756482555/logokarseb_m03rt8.png" alt="KARSEB Logo" class="w-full h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="w-full h-full bg-gradient-to-br from-karseb-orange to-orange-600 rounded-xl flex items-center justify-center morphing-blob" style="display: none;">
+                            <span class="text-white font-bold text-xl">K</span>
+                        </div>
+                    </div>
+                    <span class="text-2xl font-black text-gradient">KARSEB</span>
+                </div>
+                
+                <!-- Navigation -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#inicio" class="nav-link text-white hover:text-karseb-orange transition-all duration-300 font-medium relative group">
+                        Inicio
+                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-karseb-orange transition-all duration-300 group-hover:w-full"></span>
+                    </a>
+                    <a href="#planes" class="nav-link text-white hover:text-karseb-orange transition-all duration-300 font-medium relative group">
+                        Planes
+                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-karseb-orange transition-all duration-300 group-hover:w-full"></span>
+                    </a>
+                    <a href="#servicios" class="nav-link text-white hover:text-karseb-orange transition-all duration-300 font-medium relative group">
+                        Servicios
+                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-karseb-orange transition-all duration-300 group-hover:w-full"></span>
+                    </a>
+                    <a href="#nosotros" class="nav-link text-white hover:text-karseb-orange transition-all duration-300 font-medium relative group">
+                        Nosotros
+                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-karseb-orange transition-all duration-300 group-hover:w-full"></span>
+                    </a>
+                    <a href="#contacto" class="interactive-button bg-gradient-to-r from-karseb-orange to-orange-600 text-white px-8 py-3 rounded-full hover:shadow-2xl transition-all duration-300 font-semibold neon-glow">
+                        Contacto
+                    </a>
+                </div>
+                
+                <!-- Mobile menu button -->
+                <button class="md:hidden text-white hover:text-karseb-orange transition-colors" onclick="KarsebApp.toggleMobileMenu()">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+            
+            <!-- Mobile menu -->
+            <div id="mobileMenu" class="hidden md:hidden mt-4 pb-4 glass-effect rounded-2xl p-4">
+                <div class="flex flex-col space-y-4">
+                    <a href="#inicio" class="nav-link-mobile text-white hover:text-karseb-orange transition-colors font-medium">Inicio</a>
+                    <a href="#planes" class="nav-link-mobile text-white hover:text-karseb-orange transition-colors font-medium">Planes</a>
+                    <a href="#servicios" class="nav-link-mobile text-white hover:text-karseb-orange transition-colors font-medium">Servicios</a>
+                    <a href="#nosotros" class="nav-link-mobile text-white hover:text-karseb-orange transition-colors font-medium">Nosotros</a>
+                    <a href="#contacto" class="bg-gradient-to-r from-karseb-orange to-orange-600 text-white px-6 py-3 rounded-full hover:shadow-lg transition-all duration-300 inline-block text-center font-semibold">Contacto</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="inicio" class="hero-gradient text-white py-32 relative overflow-hidden">
+        <div class="floating-elements"></div>
+        <div class="particle-bg" id="particleContainer"></div>
+        
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="max-w-5xl mx-auto text-center">
+                <div class="animate-slide-up">
+                    <h1 class="text-6xl md:text-8xl font-black mb-8 leading-tight">
+                        Encuentra tu <br>
+                        <span class="typing-animation inline-block" id="typingText">hogar perfecto</span>
+                    </h1>
+                </div>
+                <p class="text-2xl mb-12 opacity-90 animate-fade-in font-light max-w-3xl mx-auto">
+                    <span class="text-yellow-300 font-semibold">"No buscamos lo que necesitas, buscamos lo que sueñas"</span><br>
+                    En KARSEB sabemos que hogar no es solo un espacio físico, es donde las risas, los planes y los momentos más importantes de la vida toman forma
+                </p>
+                <div class="flex flex-col sm:flex-row gap-6 justify-center animate-slide-up">
+                    <a href="https://drive.google.com/file/d/1uUJj90Fnaz811CId1fL7iQ3PnRAi54M6/view?fbclid=IwdGRjcAMerxZleHRuA2FlbQIxMQABHl7s9rhJZnjyuG-mGiPsvs7u5YsO3sjeC0TLNpqCYiHqNV1XlL9iKtF7c1uD_aem_Re4Fy6Byqv6aF0TTZ-gyAA" target="_blank" class="interactive-button group bg-white text-karseb-orange px-10 py-5 rounded-full font-bold text-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 inline-block">
+                        <i class="fas fa-search mr-3 group-hover:rotate-12 transition-transform"></i>
+                        Explorar Propiedades
+                    </a>
+                    <button onclick="KarsebApp.scrollToSection('contacto')" class="interactive-button group glass-effect border-2 border-white text-white px-10 py-5 rounded-full font-bold text-lg hover:bg-white hover:text-karseb-orange transition-all duration-300 transform hover:scale-105">
+                        <i class="fas fa-phone mr-3 group-hover:animate-bounce"></i>
+                        Contactar Ahora
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Floating geometric shapes -->
+        <div class="absolute top-20 left-10 w-20 h-20 bg-white opacity-10 rounded-full animate-float"></div>
+        <div class="absolute bottom-20 right-10 w-32 h-32 bg-karseb-orange opacity-20 rounded-2xl animate-float" style="animation-delay: -2s;"></div>
+        <div class="absolute top-1/2 left-1/4 w-16 h-16 bg-yellow-400 opacity-15 transform rotate-45 animate-bounce-slow"></div>
+    </section>
+
+
+
+
+
+    <!-- Services -->
+    <section id="servicios" class="bg-gradient-to-br from-gray-900 via-karseb-gray to-gray-800 text-white py-24 section-reveal relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute top-10 left-10 w-32 h-32 bg-karseb-orange rounded-full animate-pulse-slow"></div>
+            <div class="absolute bottom-10 right-10 w-24 h-24 bg-white rounded-full animate-bounce-slow"></div>
+        </div>
+        
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="text-center mb-16">
+                <h2 class="text-5xl md:text-6xl font-black mb-6">
+                    <span class="text-white">Nuestros</span> 
+                    <span class="text-gradient">Servicios</span>
+                </h2>
+                <p class="text-2xl text-gray-300 font-light max-w-3xl mx-auto">Experiencia integral que transforma tu búsqueda inmobiliaria en una aventura exitosa</p>
+            </div>
+            
+            <div class="max-w-6xl mx-auto">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="group text-center p-10 glass-effect rounded-3xl hover:shadow-2xl transition-all duration-500 transform hover:scale-105 card-hover">
+                        <div class="w-20 h-20 bg-gradient-to-br from-karseb-orange to-orange-600 rounded-3xl flex items-center justify-center mx-auto mb-6 group-hover:rotate-12 transition-transform duration-300 neon-glow">
+                            <i class="fas fa-handshake text-white text-3xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-4">Atención Personalizada</h3>
+                        <p class="text-gray-300 leading-relaxed">Acompañamiento completo desde la primera consulta hasta la entrega de llaves de tu nuevo hogar</p>
+                    </div>
+                    
+                    <div class="group text-center p-10 glass-effect rounded-3xl hover:shadow-2xl transition-all duration-500 transform hover:scale-105 card-hover">
+                        <div class="w-20 h-20 bg-gradient-to-br from-green-500 to-emerald-600 rounded-3xl flex items-center justify-center mx-auto mb-6 group-hover:rotate-12 transition-transform duration-300 neon-glow">
+                            <i class="fas fa-credit-card text-white text-3xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-4">Financiamiento</h3>
+                        <p class="text-gray-300 leading-relaxed">Soluciones financieras innovadoras con las mejores tasas del mercado</p>
+                    </div>
+                    
+                    <div class="group text-center p-10 glass-effect rounded-3xl hover:shadow-2xl transition-all duration-500 transform hover:scale-105 card-hover">
+                        <div class="w-20 h-20 bg-gradient-to-br from-purple-500 to-pink-600 rounded-3xl flex items-center justify-center mx-auto mb-6 group-hover:rotate-12 transition-transform duration-300 neon-glow">
+                            <i class="fas fa-key text-white text-3xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-4">Renta y Venta</h3>
+                        <p class="text-gray-300 leading-relaxed">¿Tienes una propiedad? Te ayudamos a rentarla o venderla de manera rápida y segura con el mejor precio del mercado</p>
+                    </div>
+                    
+                    <div class="group text-center p-10 glass-effect rounded-3xl hover:shadow-2xl transition-all duration-500 transform hover:scale-105 card-hover">
+                        <div class="w-20 h-20 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-3xl flex items-center justify-center mx-auto mb-6 group-hover:rotate-12 transition-transform duration-300 neon-glow">
+                            <i class="fas fa-chart-line text-white text-3xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-4">Inversiones Inmobiliarias</h3>
+                        <p class="text-gray-300 leading-relaxed">Excelentes oportunidades de inversión - vive en una casa espaciosa y moderna, mientras generas ingresos con los locales comerciales</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Payment Plans -->
+    <section id="planes" class="py-24 bg-gradient-to-br from-blue-50 to-indigo-100 section-reveal">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-5xl md:text-6xl font-black text-gradient mb-6">Planes de Pago</h2>
+                <p class="text-2xl text-gray-600 font-light max-w-3xl mx-auto">Facilitamos tu sueño con opciones de financiamiento flexibles y accesibles</p>
+            </div>
+            
+            <div class="max-w-6xl mx-auto">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
+                    <!-- Payment Plan Card -->
+                    <div class="bg-white rounded-3xl p-10 shadow-2xl card-hover relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-karseb-orange to-orange-600 rounded-full -translate-y-16 translate-x-16 opacity-10"></div>
+                        <div class="relative z-10">
+                            <div class="w-16 h-16 bg-gradient-to-br from-karseb-orange to-orange-600 rounded-2xl flex items-center justify-center mb-6 neon-glow">
+                                <i class="fas fa-percentage text-white text-2xl"></i>
+                            </div>
+                            <h3 class="text-3xl font-black text-karseb-gray mb-6">Plan Preferencial</h3>
+                            <div class="space-y-6">
+                                <div class="flex items-center justify-between p-4 bg-gradient-to-r from-karseb-orange/10 to-orange-100 rounded-2xl">
+                                    <span class="font-semibold text-karseb-gray">Anticipo:</span>
+                                    <span class="text-2xl font-black text-karseb-orange">40%</span>
+                                </div>
+                                <div class="flex items-center justify-between p-4 bg-gradient-to-r from-green-50 to-emerald-100 rounded-2xl">
+                                    <span class="font-semibold text-karseb-gray">Resto:</span>
+                                    <span class="text-xl font-bold text-green-600">12 meses sin intereses</span>
+                                </div>
+                            </div>
+                            <div class="mt-8 p-6 bg-gray-50 rounded-2xl">
+                                <h4 class="font-bold text-karseb-gray mb-3 flex items-center">
+                                    <i class="fas fa-star text-karseb-orange mr-2"></i>
+                                    Beneficios Incluidos
+                                </h4>
+                                <ul class="space-y-2 text-gray-600">
+                                    <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>Sin intereses adicionales</li>
+                                    <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>Asesoría legal gratuita</li>
+                                    <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>Trámites incluidos</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Credit Options Card -->
+                    <div class="bg-white rounded-3xl p-10 shadow-2xl card-hover relative overflow-hidden">
+                        <div class="absolute top-0 left-0 w-32 h-32 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full -translate-y-16 -translate-x-16 opacity-10"></div>
+                        <div class="relative z-10">
+                            <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center mb-6 neon-glow">
+                                <i class="fas fa-university text-white text-2xl"></i>
+                            </div>
+                            <h3 class="text-3xl font-black text-karseb-gray mb-6">Créditos Aceptados</h3>
+                            <div class="space-y-6">
+                                <div class="p-6 bg-gradient-to-r from-green-50 to-emerald-100 rounded-2xl">
+                                    <div class="flex items-center mb-3">
+                                        <div class="w-12 h-12 bg-green-500 rounded-xl flex items-center justify-center mr-4">
+                                            <i class="fas fa-home text-white text-lg"></i>
+                                        </div>
+                                        <h4 class="text-xl font-bold text-green-700">INFONAVIT</h4>
+                                    </div>
+                                    <p class="text-gray-600">Acepta tu crédito INFONAVIT para hacer realidad tu hogar</p>
+                                </div>
+                                <div class="p-6 bg-gradient-to-r from-blue-50 to-indigo-100 rounded-2xl">
+                                    <div class="flex items-center mb-3">
+                                        <div class="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center mr-4">
+                                            <i class="fas fa-university text-white text-lg"></i>
+                                        </div>
+                                        <h4 class="text-xl font-bold text-blue-700">Créditos Bancarios</h4>
+                                    </div>
+                                    <p class="text-gray-600">Trabajamos con los principales bancos del país</p>
+                                </div>
+                            </div>
+                            <div class="mt-8 p-6 bg-gradient-to-r from-karseb-orange/10 to-orange-100 rounded-2xl">
+                                <h4 class="font-bold text-karseb-orange mb-3 flex items-center">
+                                    <i class="fas fa-handshake mr-2"></i>
+                                    Te Ayudamos Con
+                                </h4>
+                                <ul class="space-y-2 text-gray-600">
+                                    <li class="flex items-center"><i class="fas fa-arrow-right text-karseb-orange mr-2 text-xs"></i>Gestión de crédito</li>
+                                    <li class="flex items-center"><i class="fas fa-arrow-right text-karseb-orange mr-2 text-xs"></i>Documentación completa</li>
+                                    <li class="flex items-center"><i class="fas fa-arrow-right text-karseb-orange mr-2 text-xs"></i>Seguimiento personalizado</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- CTA Section -->
+                <div class="text-center bg-gradient-to-r from-karseb-orange to-orange-600 rounded-3xl p-12 text-white">
+                    <h3 class="text-4xl font-black mb-6">¡Agenda tu Cita Ahora!</h3>
+                    <p class="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
+                        Conoce más sobre nuestros increíbles proyectos y oportunidades de inversión. 
+                        Nuestros expertos te guiarán en cada paso del proceso.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-6 justify-center">
+                        <a href="https://wa.me/3521113522?text=¡Hola%20KARSEB!%20👋%0A%0AQuiero%20agendar%20una%20cita%20para%20conocer%20más%20sobre%20sus%20planes%20de%20pago%20y%20proyectos%20disponibles.%0A%0A¿Cuándo%20podríamos%20reunirnos?%0A%0A¡Gracias!" target="_blank" class="interactive-button group bg-white text-karseb-orange px-10 py-5 rounded-full font-bold text-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 inline-block">
+                            <i class="fas fa-calendar-alt mr-3 group-hover:rotate-12 transition-transform"></i>
+                            Agendar Cita
+                        </a>
+                        <a href="tel:3521113522" class="interactive-button group glass-effect border-2 border-white text-white px-10 py-5 rounded-full font-bold text-lg hover:bg-white hover:text-karseb-orange transition-all duration-300 transform hover:scale-105">
+                            <i class="fas fa-phone mr-3 group-hover:animate-bounce-phone transition-transform"></i>
+                            Llamar Ahora
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Social Media Testimonials -->
+    <section class="py-24 bg-gradient-to-br from-karseb-orange to-orange-600 text-white section-reveal relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute top-10 right-10 w-40 h-40 bg-white rounded-full animate-pulse-slow"></div>
+            <div class="absolute bottom-10 left-10 w-32 h-32 bg-yellow-300 rounded-full animate-bounce-slow"></div>
+        </div>
+        
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="text-center mb-16">
+                <h2 class="text-5xl md:text-6xl font-black mb-6">
+                    <span class="text-white">Familias</span> 
+                    <span class="text-yellow-300">Felices</span>
+                </h2>
+                <p class="text-2xl text-white/90 font-light max-w-4xl mx-auto">
+                    Más de 500 familias han encontrado su hogar perfecto con nosotros. 
+                    <span class="font-bold text-yellow-300">¡Visita nuestras redes sociales y conoce sus historias reales!</span>
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+                <div class="text-center group">
+                    <div class="w-24 h-24 bg-white/20 backdrop-blur rounded-3xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <i class="fab fa-facebook-f text-white text-4xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Facebook</h3>
+                    <p class="text-white/80 mb-6 leading-relaxed">
+                        Fotos de entregas de llaves, familias celebrando y testimonios reales de nuestros clientes satisfechos
+                    </p>
+                    <a href="https://www.facebook.com/share/1C9T4nB4wh/?mibextid=wwXIfr" target="_blank" class="interactive-button bg-white text-karseb-orange px-8 py-4 rounded-full font-bold hover:shadow-2xl transition-all duration-300 transform hover:scale-105 inline-block">
+                        <i class="fas fa-heart mr-2"></i>Ver Familias Felices
+                    </a>
+                </div>
+                
+                <div class="text-center group">
+                    <div class="w-24 h-24 bg-white/20 backdrop-blur rounded-3xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <i class="fab fa-instagram text-white text-4xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Instagram</h3>
+                    <p class="text-white/80 mb-6 leading-relaxed">
+                        Stories e historias inspiradoras de familias que han cumplido su sueño de tener casa propia
+                    </p>
+                    <a href="https://www.instagram.com/karseb_inmobiliaria?igsh=MWl0cnNnMjJ0enA0dQ==" target="_blank" class="interactive-button bg-white text-karseb-orange px-8 py-4 rounded-full font-bold hover:shadow-2xl transition-all duration-300 transform hover:scale-105 inline-block">
+                        <i class="fas fa-camera mr-2"></i>Ver Historias
+                    </a>
+                </div>
+                
+                <div class="text-center group">
+                    <div class="w-24 h-24 bg-white/20 backdrop-blur rounded-3xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <i class="fab fa-tiktok text-white text-4xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">TikTok</h3>
+                    <p class="text-white/80 mb-6 leading-relaxed">
+                        Videos emotivos del momento exacto cuando las familias reciben las llaves de su nuevo hogar
+                    </p>
+                    <a href="https://www.tiktok.com/@karseb.inmobiliar?_t=ZS-8zHlqWUXBy8&_r=1" target="_blank" class="interactive-button bg-white text-karseb-orange px-8 py-4 rounded-full font-bold hover:shadow-2xl transition-all duration-300 transform hover:scale-105 inline-block">
+                        <i class="fas fa-play mr-2"></i>Ver Videos
+                    </a>
+                </div>
+            </div>
+            
+            <div class="text-center bg-white/10 backdrop-blur rounded-3xl p-8">
+                <h3 class="text-3xl font-black mb-4 text-yellow-300">¡Tu Historia Podría Ser la Siguiente!</h3>
+                <p class="text-xl mb-6 text-white/90">
+                    Únete a las más de 500 familias que ya han encontrado su hogar perfecto con KARSEB
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="https://wa.me/3521113522?text=¡Hola%20KARSEB!%20👋%0A%0AHe%20visto%20las%20historias%20de%20familias%20felices%20en%20sus%20redes%20sociales%20y%20me%20encantaría%20que%20me%20ayuden%20a%20encontrar%20mi%20hogar%20perfecto%20también.%0A%0A¿Podemos%20platicar?%0A%0A¡Gracias!" target="_blank" class="interactive-button bg-yellow-400 text-karseb-gray px-8 py-4 rounded-full font-bold hover:shadow-2xl transition-all duration-300 transform hover:scale-105 inline-block">
+                        <i class="fas fa-home mr-2"></i>Quiero Mi Hogar Perfecto
+                    </a>
+                    <a href="tel:3521113522" class="interactive-button glass-effect border-2 border-white text-white px-8 py-4 rounded-full font-bold hover:bg-white hover:text-karseb-orange transition-all duration-300 transform hover:scale-105">
+                        <i class="fas fa-phone mr-2"></i>Llamar Ahora
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Us -->
+    <section id="nosotros" class="py-24 bg-white section-reveal">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div class="space-y-8">
+                    <h2 class="text-5xl md:text-6xl font-black text-gradient">¿Por qué KARSEB?</h2>
+                    <p class="text-xl text-gray-600 leading-relaxed font-light">
+                        Con más de una década transformando sueños en realidad, nos especializamos en renta de oficinas, casas, bodegas, departamentos y locales comerciales. También ofrecemos excelentes oportunidades de inversión inmobiliaria.
+                    </p>
+                    <div class="space-y-6">
+                        <div class="flex items-center space-x-4 group">
+                            <div class="w-12 h-12 bg-gradient-to-br from-karseb-orange to-orange-600 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform neon-glow">
+                                <i class="fas fa-rocket text-white text-lg"></i>
+                            </div>
+                            <span class="text-karseb-gray font-semibold text-lg">+500 familias felices en su nuevo hogar</span>
+                        </div>
+                        <div class="flex items-center space-x-4 group">
+                            <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform neon-glow">
+                                <i class="fas fa-award text-white text-lg"></i>
+                            </div>
+                            <span class="text-karseb-gray font-semibold text-lg">Equipo certificado con tecnología IA</span>
+                        </div>
+                        <div class="flex items-center space-x-4 group">
+                            <div class="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform neon-glow">
+                                <i class="fas fa-clock text-white text-lg"></i>
+                            </div>
+                            <span class="text-karseb-gray font-semibold text-lg">Soporte disponible con respuesta inmediata</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="relative">
+                    <div class="glass-effect rounded-3xl p-10 shadow-2xl transform hover:scale-105 transition-all duration-500">
+                        <div class="text-center">
+                            <div class="w-32 h-32 rounded-full flex items-center justify-center mx-auto mb-8 morphing-blob neon-glow bg-white p-2">
+                                <img src="https://res.cloudinary.com/dh7zke3v6/image/upload/v1756482555/logokarseb_m03rt8.png" alt="KARSEB Logo" class="w-full h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div class="w-full h-full bg-gradient-to-br from-karseb-orange to-orange-600 rounded-full flex items-center justify-center" style="display: none;">
+                                    <span class="text-white font-black text-5xl">K</span>
+                                </div>
+                            </div>
+                            <h3 class="text-3xl font-black text-gradient mb-6">KARSEB</h3>
+                            <p class="text-gray-600 mb-8 text-lg font-light">Innovación que conecta personas con hogares perfectos</p>
+                            <div class="grid grid-cols-3 gap-6 text-center">
+                                <div class="space-y-2">
+                                    <div class="text-4xl font-black text-gradient">500+</div>
+                                    <div class="text-sm text-gray-600 font-medium">Propiedades</div>
+                                </div>
+                                <div class="space-y-2">
+                                    <div class="text-4xl font-black text-gradient">10+</div>
+                                    <div class="text-sm text-gray-600 font-medium">Años</div>
+                                </div>
+                                <div class="space-y-2">
+                                    <div class="text-4xl font-black text-gradient">98%</div>
+                                    <div class="text-sm text-gray-600 font-medium">Satisfacción</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contacto" class="py-24 bg-gradient-to-br from-gray-50 to-white section-reveal">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-5xl md:text-6xl font-black text-gradient mb-6">¡Hablemos Ahora!</h2>
+                <p class="text-2xl text-gray-600 font-light max-w-3xl mx-auto">Tu hogar perfecto está a una conversación de distancia. Nuestro equipo está listo para ayudarte</p>
+            </div>
+            
+            <div class="max-w-6xl mx-auto">
+                <!-- WhatsApp Numbers - Main CTAs -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+                    <div class="bg-white text-karseb-orange p-8 rounded-3xl shadow-2xl contact-card">
+                        <div class="text-center mb-6">
+                            <div class="w-16 h-16 bg-gradient-to-br from-karseb-orange to-orange-600 rounded-2xl flex items-center justify-center mx-auto mb-4 animate-pulse-glow">
+                                <i class="fab fa-whatsapp text-white text-2xl"></i>
+                            </div>
+                            <div class="text-sm text-gray-600 font-medium">WhatsApp Principal</div>
+                            <div class="text-3xl font-black">3521113522</div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <a href="tel:3521113522" class="phone-button bg-blue-500 hover:bg-blue-600 text-white py-3 px-4 rounded-xl font-semibold text-center transition-all transform hover:scale-105">
+                                <i class="fas fa-phone mr-2"></i>Llamar
+                            </a>
+                            <a href="https://wa.me/3521113522?text=¡Hola%20KARSEB!%20👋%0A%0AMe%20interesa%20conocer%20más%20sobre%20sus%20propiedades.%20¿Podrían%20ayudarme%20a%20encontrar%20mi%20hogar%20ideal?%0A%0A¡Gracias!" target="_blank" class="phone-button bg-green-500 hover:bg-green-600 text-white py-3 px-4 rounded-xl font-semibold text-center transition-all transform hover:scale-105">
+                                <i class="fab fa-whatsapp mr-2"></i>Escribir
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white text-karseb-orange p-8 rounded-3xl shadow-2xl contact-card">
+                        <div class="text-center mb-6">
+                            <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4 animate-pulse-glow">
+                                <i class="fab fa-whatsapp text-white text-2xl"></i>
+                            </div>
+                            <div class="text-sm text-gray-600 font-medium">WhatsApp Secundario</div>
+                            <div class="text-3xl font-black">3525282230</div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <a href="tel:3525282230" class="phone-button bg-blue-500 hover:bg-blue-600 text-white py-3 px-4 rounded-xl font-semibold text-center transition-all transform hover:scale-105">
+                                <i class="fas fa-phone mr-2"></i>Llamar
+                            </a>
+                            <a href="https://wa.me/3525282230?text=¡Hola%20KARSEB!%20👋%0A%0AMe%20interesa%20conocer%20más%20sobre%20sus%20propiedades.%20¿Podrían%20ayudarme%20a%20encontrar%20mi%20hogar%20ideal?%0A%0A¡Gracias!" target="_blank" class="phone-button bg-green-500 hover:bg-green-600 text-white py-3 px-4 rounded-xl font-semibold text-center transition-all transform hover:scale-105">
+                                <i class="fab fa-whatsapp mr-2"></i>Escribir
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Info -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="glass-effect rounded-3xl p-8">
+                        <h4 class="text-2xl font-bold text-karseb-gray mb-6 text-center">Horarios de Atención</h4>
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center py-2 border-b border-gray-200">
+                                <span class="font-semibold text-karseb-gray">Lunes - Viernes:</span>
+                                <span class="text-gray-600 font-medium">8:00 AM - 8:00 PM</span>
+                            </div>
+                            <div class="flex justify-between items-center py-2 border-b border-gray-200">
+                                <span class="font-semibold text-karseb-gray">Sábados:</span>
+                                <span class="text-gray-600 font-medium">9:00 AM - 6:00 PM</span>
+                            </div>
+                            <div class="flex justify-between items-center py-2">
+                                <span class="font-semibold text-karseb-gray">Domingos:</span>
+                                <span class="text-gray-600 font-medium">Solo emergencias</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-effect rounded-3xl p-8">
+                        <h4 class="text-2xl font-bold text-karseb-gray mb-6 text-center">¿Por qué elegir KARSEB?</h4>
+                        <div class="space-y-4">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-8 h-8 bg-gradient-to-br from-karseb-orange to-orange-600 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-rocket text-white text-sm"></i>
+                                </div>
+                                <span class="text-gray-700 font-medium">Respuesta inmediata garantizada</span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <div class="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-award text-white text-sm"></i>
+                                </div>
+                                <span class="text-gray-700 font-medium">Más de 500 familias satisfechas</span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <div class="w-8 h-8 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-shield-alt text-white text-sm"></i>
+                                </div>
+                                <span class="text-gray-700 font-medium">Asesoría legal completa</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gradient-to-br from-karseb-gray via-gray-800 to-gray-900 text-white py-16">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
+                <div class="space-y-6">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-14 h-14 rounded-2xl overflow-hidden neon-glow bg-white p-2">
+                            <img src="https://res.cloudinary.com/dh7zke3v6/image/upload/v1756482555/logokarseb_m03rt8.png" alt="KARSEB Logo" class="w-full h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="w-full h-full bg-gradient-to-br from-karseb-orange to-orange-600 rounded-xl flex items-center justify-center morphing-blob" style="display: none;">
+                                <span class="text-white font-black text-2xl">K</span>
+                            </div>
+                        </div>
+                        <span class="text-3xl font-black text-gradient">KARSEB</span>
+                    </div>
+                    <p class="text-gray-300 leading-relaxed font-light">
+                        <span class="text-karseb-orange font-semibold">"No buscamos lo que necesitas, buscamos lo que sueñas"</span><br>
+                        Más de 500 familias han encontrado su hogar perfecto con nosotros. Tu historia de éxito podría ser la siguiente.
+                    </p>
+
+                    <div class="flex space-x-4">
+                        <a href="https://www.facebook.com/share/1C9T4nB4wh/?mibextid=wwXIfr" target="_blank" class="w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl flex items-center justify-center hover:scale-110 transition-transform neon-glow" title="Ver familias felices en Facebook">
+                            <i class="fab fa-facebook-f text-lg"></i>
+                        </a>
+                        <a href="https://www.instagram.com/karseb_inmobiliaria?igsh=MWl0cnNnMjJ0enA0dQ==" target="_blank" class="w-12 h-12 bg-gradient-to-br from-pink-600 to-purple-600 rounded-2xl flex items-center justify-center hover:scale-110 transition-transform neon-glow" title="Historias de éxito en Instagram">
+                            <i class="fab fa-instagram text-lg"></i>
+                        </a>
+                        <a href="https://www.tiktok.com/@karseb.inmobiliar?_t=ZS-8zHlqWUXBy8&_r=1" target="_blank" class="w-12 h-12 bg-gradient-to-br from-gray-800 to-black rounded-2xl flex items-center justify-center hover:scale-110 transition-transform neon-glow" title="Videos de entregas de llaves en TikTok">
+                            <i class="fab fa-tiktok text-lg"></i>
+                        </a>
+                        <a href="https://wa.me/3521113522?text=Hola%20KARSEB,%20vi%20su%20página%20web" target="_blank" class="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center hover:scale-110 transition-transform neon-glow" title="Contactar por WhatsApp">
+                            <i class="fab fa-whatsapp text-lg"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-xl font-bold mb-6 text-gradient">Servicios</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-300 hover:text-karseb-orange transition-colors font-medium flex items-center"><i class="fas fa-arrow-right mr-2 text-xs"></i>Renta de Casas</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-karseb-orange transition-colors font-medium flex items-center"><i class="fas fa-arrow-right mr-2 text-xs"></i>Renta de Oficinas</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-karseb-orange transition-colors font-medium flex items-center"><i class="fas fa-arrow-right mr-2 text-xs"></i>Locales Comerciales</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-karseb-orange transition-colors font-medium flex items-center"><i class="fas fa-arrow-right mr-2 text-xs"></i>Inversiones Inmobiliarias</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-xl font-bold mb-6 text-gradient">Contacto</h4>
+                    <div class="space-y-4">
+                        <div class="space-y-2">
+                            <a href="tel:3521113522" class="block text-lg font-semibold hover:text-karseb-orange transition-colors">
+                                <i class="fas fa-phone mr-3"></i>3521113522
+                            </a>
+                            <a href="tel:3525282230" class="block text-lg font-semibold hover:text-karseb-orange transition-colors">
+                                <i class="fas fa-headset mr-3"></i>3525282230
+                            </a>
+                        </div>
+                        <div class="space-y-2">
+                            <a href="https://wa.me/3521113522" target="_blank" class="block text-lg font-semibold hover:text-green-400 transition-colors">
+                                <i class="fab fa-whatsapp mr-3"></i>WhatsApp Principal
+                            </a>
+                            <a href="https://wa.me/3525282230" target="_blank" class="block text-lg font-semibold hover:text-green-400 transition-colors">
+                                <i class="fab fa-whatsapp mr-3"></i>WhatsApp Secundario
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-xl font-bold mb-6 text-gradient">Catálogo Digital</h4>
+                    <p class="text-gray-300 mb-4 font-light">Descarga nuestro catálogo completo de propiedades</p>
+                    <div class="space-y-4">
+                        <a href="https://drive.google.com/file/d/1uUJj90Fnaz811CId1fL7iQ3PnRAi54M6/view?fbclid=IwdGRjcAMerxZleHRuA2FlbQIxMQABHl7s9rhJZnjyuG-mGiPsvs7u5YsO3sjeC0TLNpqCYiHqNV1XlL9iKtF7c1uD_aem_Re4Fy6Byqv6aF0TTZ-gyAA" target="_blank" class="w-full interactive-button bg-gradient-to-r from-karseb-orange to-orange-600 text-white py-3 rounded-2xl hover:shadow-xl transition-all duration-300 font-semibold neon-glow block text-center">
+                            <i class="fas fa-download mr-2"></i>Ver Catálogo
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 mt-12 pt-8 text-center">
+                <p class="text-gray-400 font-light">&copy; 2025 KARSEB Inmobiliaria. "No buscamos lo que necesitas, buscamos lo que sueñas"</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Float Button -->
+    <a href="https://wa.me/3521113522?text=¡Hola%20KARSEB!%20👋%0A%0AMe%20interesa%20conocer%20más%20sobre%20sus%20propiedades.%20¿Podrían%20ayudarme%20a%20encontrar%20mi%20hogar%20ideal?%0A%0A¡Gracias!" target="_blank" class="whatsapp-float">
+        <div class="w-16 h-16 bg-green-500 hover:bg-green-600 rounded-full flex items-center justify-center shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:scale-110">
+            <i class="fab fa-whatsapp text-white text-2xl"></i>
+        </div>
+    </a>
+
+    <!-- Property Modal -->
+    <div id="propertyModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-3xl font-bold text-karseb-gray">Detalles de la Propiedad</h3>
+                <button onclick="KarsebApp.closeModal()" class="text-gray-500 hover:text-karseb-orange text-2xl">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div id="modalContent">
+                <!-- Content will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Container -->
+    <div id="notificationContainer"></div>
+
+    <script>
+        // Main KARSEB Application Class
+        class KarsebApp {
+            constructor() {
+                this.properties = [
+                    {
+                        id: 1,
+                        title: "Villa Moderna Zona Norte",
+                        type: "house",
+                        price: 185000,
+                        bedrooms: 3,
+                        bathrooms: 2,
+                        area: 150,
+                        location: "Zona Norte",
+                        images: 12,
+                        featured: true,
+                        description: "Hermosa villa moderna con acabados de lujo, jardín privado y piscina. Ubicada en la exclusiva zona norte de la ciudad.",
+                        features: ["Piscina", "Jardín", "Garaje", "Terraza", "Cocina moderna"]
+                    },
+                    {
+                        id: 2,
+                        title: "Loft Moderno Centro",
+                        type: "apartment",
+                        price: 95000,
+                        bedrooms: 2,
+                        bathrooms: 1,
+                        area: 85,
+                        location: "Centro",
+                        images: 8,
+                        featured: true,
+                        description: "Loft contemporáneo en el corazón de la ciudad. Diseño minimalista con techos altos y grandes ventanales.",
+                        features: ["Techos altos", "Ventanales", "Diseño moderno", "Ubicación céntrica"]
+                    },
+                    {
+                        id: 3,
+                        title: "Local Premium",
+                        type: "commercial",
+                        price: 250000,
+                        bedrooms: 0,
+                        bathrooms: 2,
+                        area: 200,
+                        location: "Zona Comercial",
+                        images: 15,
+                        featured: true,
+                        description: "Local comercial premium en la zona de mayor tráfico comercial. Ideal para cualquier tipo de negocio.",
+                        features: ["Estacionamiento", "Zona comercial", "Alto tráfico", "Fácil acceso"]
+                    }
+                ];
+                
+                this.init();
+            }
+
+            init() {
+                this.loadProperties();
+                this.initScrollEffects();
+                this.initParticles();
+                this.initTypingAnimation();
+                this.initIntersectionObserver();
+                this.initPhoneTracking();
+            }
+
+            // Navigation Methods
+            static toggleMobileMenu() {
+                const menu = document.getElementById('mobileMenu');
+                menu.classList.toggle('hidden');
+            }
+
+            static scrollToSection(sectionId) {
+                const element = document.getElementById(sectionId);
+                if (element) {
+                    element.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            }
+
+            // Property Management
+            loadProperties() {
+                const grid = document.getElementById('propertiesGrid');
+                if (!grid) return;
+
+                grid.innerHTML = this.properties.map(property => this.createPropertyCard(property)).join('');
+            }
+
+            createPropertyCard(property) {
+                const gradientClasses = {
+                    house: 'from-karseb-orange via-orange-400 to-yellow-400',
+                    apartment: 'from-karseb-gray via-gray-600 to-blue-600',
+                    commercial: 'from-emerald-400 via-green-500 to-teal-600'
+                };
+
+                const iconClasses = {
+                    house: 'fas fa-home',
+                    apartment: 'fas fa-building',
+                    commercial: 'fas fa-store'
+                };
+
+                const badgeClasses = {
+                    house: 'bg-white text-karseb-orange',
+                    apartment: 'bg-green-500 text-white',
+                    commercial: 'bg-yellow-400 text-gray-800'
+                };
+
+                const badgeTexts = {
+                    house: 'Destacada',
+                    apartment: 'Nuevo',
+                    commercial: 'Oportunidad'
+                };
+
+                return `
+                    <div class="property-card card-hover group" data-property-id="${property.id}">
+                        <div class="h-64 bg-gradient-to-br ${gradientClasses[property.type]} relative overflow-hidden">
+                            <div class="absolute top-6 left-6 ${badgeClasses[property.type]} px-4 py-2 rounded-full text-sm font-bold flex items-center">
+                                <i class="fas fa-star mr-2"></i>${badgeTexts[property.type]}
+                            </div>
+                            <div class="absolute inset-0 flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
+                                <i class="${iconClasses[property.type]} text-white text-8xl opacity-30"></i>
+                            </div>
+                            <div class="absolute bottom-4 right-4 bg-black/50 backdrop-blur text-white px-3 py-1 rounded-full text-sm font-semibold">
+                                <i class="fas fa-images mr-1"></i>${property.images} fotos
+                            </div>
+                        </div>
+                        <div class="p-8">
+                            <h3 class="text-2xl font-bold text-karseb-gray mb-3">${property.title}</h3>
+                            <p class="text-gray-600 mb-4 flex items-center">
+                                ${property.bedrooms > 0 ? `<i class="fas fa-bed mr-2 text-karseb-orange"></i>${property.bedrooms} hab •` : ''}
+                                <i class="fas fa-bath ml-2 mr-2 text-karseb-orange"></i>${property.bathrooms} baños •
+                                <i class="fas fa-ruler-combined ml-2 mr-2 text-karseb-orange"></i>${property.area}m²
+                            </p>
+                            <div class="flex items-center justify-between">
+                                <span class="text-3xl font-black text-gradient">$${property.price.toLocaleString()}</span>
+                                <button onclick="KarsebApp.viewProperty(${property.id})" class="interactive-button bg-gradient-to-r from-karseb-gray to-gray-700 text-white px-6 py-3 rounded-2xl hover:shadow-xl transition-all duration-300 font-semibold transform hover:scale-105">
+                                    Ver Detalles
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            static viewProperty(propertyId) {
+                const app = window.karsebApp;
+                const property = app.properties.find(p => p.id === propertyId);
+                
+                if (!property) return;
+
+                const modalContent = document.getElementById('modalContent');
+                modalContent.innerHTML = `
+                    <div class="space-y-6">
+                        <div class="h-64 bg-gradient-to-br from-karseb-orange to-orange-600 rounded-2xl flex items-center justify-center">
+                            <i class="fas fa-home text-white text-8xl opacity-50"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-2xl font-bold text-karseb-gray mb-4">${property.title}</h4>
+                            <p class="text-gray-600 mb-4">${property.description}</p>
+                            <div class="grid grid-cols-2 gap-4 mb-6">
+                                <div class="bg-gray-50 p-4 rounded-xl">
+                                    <div class="text-sm text-gray-500">Precio</div>
+                                    <div class="text-2xl font-bold text-karseb-orange">$${property.price.toLocaleString()}</div>
+                                </div>
+                                <div class="bg-gray-50 p-4 rounded-xl">
+                                    <div class="text-sm text-gray-500">Área</div>
+                                    <div class="text-2xl font-bold text-karseb-gray">${property.area}m²</div>
+                                </div>
+                            </div>
+                            <div class="mb-6">
+                                <h5 class="font-bold text-karseb-gray mb-3">Características:</h5>
+                                <div class="flex flex-wrap gap-2">
+                                    ${property.features.map(feature => `
+                                        <span class="bg-karseb-orange/10 text-karseb-orange px-3 py-1 rounded-full text-sm font-medium">
+                                            ${feature}
+                                        </span>
+                                    `).join('')}
+                                </div>
+                            </div>
+                            <div class="flex gap-4">
+                                <button onclick="KarsebApp.scheduleVisit(${property.id})" class="flex-1 bg-gradient-to-r from-karseb-orange to-orange-600 text-white py-3 rounded-xl font-semibold hover:shadow-lg transition-all">
+                                    <i class="fas fa-calendar mr-2"></i>Agendar Visita
+                                </button>
+                                <button onclick="KarsebApp.requestInfo(${property.id})" class="flex-1 bg-karseb-gray text-white py-3 rounded-xl font-semibold hover:bg-gray-700 transition-all">
+                                    <i class="fas fa-info-circle mr-2"></i>Más Info
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                document.getElementById('propertyModal').classList.add('active');
+            }
+
+            static closeModal() {
+                document.getElementById('propertyModal').classList.remove('active');
+            }
+
+            static scheduleVisit(propertyId) {
+                const whatsappMessage = `¡Hola KARSEB! 👋
+
+Me interesa agendar una visita para la propiedad ID: ${propertyId}
+
+¿Cuándo podríamos coordinar una cita?
+
+¡Gracias!`;
+                
+                const whatsappUrl = `https://wa.me/3521113522?text=${encodeURIComponent(whatsappMessage)}`;
+                window.open(whatsappUrl, '_blank');
+                
+                KarsebApp.showNotification('¡Perfecto! Te estamos redirigiendo a WhatsApp para agendar tu visita.', 'success');
+                KarsebApp.closeModal();
+            }
+
+            static requestInfo(propertyId) {
+                const whatsappMessage = `¡Hola KARSEB! 👋
+
+Necesito más información sobre la propiedad ID: ${propertyId}
+
+¿Podrían enviarme detalles adicionales, fotos y disponibilidad?
+
+¡Gracias!`;
+                
+                const whatsappUrl = `https://wa.me/3521113522?text=${encodeURIComponent(whatsappMessage)}`;
+                window.open(whatsappUrl, '_blank');
+                
+                KarsebApp.showNotification('¡Perfecto! Te estamos redirigiendo a WhatsApp para enviarte más información.', 'info');
+                KarsebApp.closeModal();
+            }
+
+            // Search Functionality
+            static searchProperties() {
+                const searchContainer = document.getElementById('searchContainer');
+                const searchBtn = document.getElementById('searchBtn');
+                
+                // Add loading state
+                searchContainer.classList.add('search-active');
+                searchBtn.innerHTML = '<div class="loading-spinner mr-3"></div>Buscando...';
+                
+                // Get search values
+                const propertyType = document.getElementById('propertyType').value;
+                const location = document.getElementById('location').value;
+                const priceRange = document.getElementById('priceRange').value;
+                const bedrooms = document.getElementById('bedrooms').value;
+
+                setTimeout(() => {
+                    searchContainer.classList.remove('search-active');
+                    searchBtn.innerHTML = '<i class="fas fa-search mr-3"></i>Buscar';
+                    
+                    KarsebApp.showNotification(
+                        `¡Búsqueda completada! Encontramos 23 propiedades que coinciden con tus criterios. Filtros aplicados: ${propertyType || 'Cualquier tipo'}, ${location || 'Cualquier ubicación'}.`,
+                        'success'
+                    );
+                }, 2000);
+            }
+
+            static showAllProperties() {
+                KarsebApp.showNotification('Cargando catálogo completo con más de 500 propiedades disponibles...', 'info');
+                setTimeout(() => {
+                    KarsebApp.scrollToSection('propiedades');
+                }, 1000);
+            }
+
+            // Phone Click Tracking
+            initPhoneTracking() {
+                document.querySelectorAll('a[href^="tel:"]').forEach(link => {
+                    link.addEventListener('click', (e) => {
+                        const phoneNumber = e.target.closest('a').href.replace('tel:', '');
+                        KarsebApp.showNotification(
+                            `Iniciando llamada a ${phoneNumber}. ¡Gracias por contactar a KARSEB!`,
+                            'info'
+                        );
+                    });
+                });
+            }
+
+            // Notification System
+            static showNotification(message, type = 'info') {
+                const container = document.getElementById('notificationContainer');
+                const notification = document.createElement('div');
+                
+                const icons = {
+                    success: 'fas fa-check-circle text-green-500',
+                    error: 'fas fa-exclamation-circle text-red-500',
+                    warning: 'fas fa-exclamation-triangle text-yellow-500',
+                    info: 'fas fa-info-circle text-blue-500'
+                };
+                
+                notification.className = 'notification';
+                notification.innerHTML = `
+                    <div class="flex items-start space-x-3">
+                        <i class="${icons[type]} text-xl flex-shrink-0 mt-1"></i>
+                        <div>
+                            <div class="font-semibold text-gray-800">KARSEB</div>
+                            <div class="text-gray-600 text-sm">${message}</div>
+                        </div>
+                        <button onclick="this.parentElement.parentElement.remove()" class="text-gray-400 hover:text-gray-600 ml-4">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                `;
+                
+                container.appendChild(notification);
+                
+                setTimeout(() => notification.classList.add('show'), 100);
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                    setTimeout(() => notification.remove(), 300);
+                }, 5000);
+            }
+
+            // Animation and Effects
+            initScrollEffects() {
+                window.addEventListener('scroll', () => {
+                    const scrolled = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+                    document.getElementById('scrollIndicator').style.transform = `scaleX(${scrolled / 100})`;
+                    
+                    const header = document.getElementById('header');
+                    const navLinks = document.querySelectorAll('.nav-link');
+                    const mobileNavLinks = document.querySelectorAll('.nav-link-mobile');
+                    
+                    if (window.scrollY > 100) {
+                        header.style.background = 'rgba(255, 255, 255, 0.95)';
+                        header.style.backdropFilter = 'blur(20px)';
+                        
+                        // Change nav links to orange when scrolled
+                        navLinks.forEach(link => {
+                            link.classList.remove('text-white');
+                            link.classList.add('text-karseb-orange');
+                        });
+                        mobileNavLinks.forEach(link => {
+                            link.classList.remove('text-white');
+                            link.classList.add('text-karseb-orange');
+                        });
+                    } else {
+                        header.style.background = 'rgba(255, 255, 255, 0.1)';
+                        header.style.backdropFilter = 'blur(20px)';
+                        
+                        // Change nav links back to white when at top
+                        navLinks.forEach(link => {
+                            link.classList.remove('text-karseb-orange');
+                            link.classList.add('text-white');
+                        });
+                        mobileNavLinks.forEach(link => {
+                            link.classList.remove('text-karseb-orange');
+                            link.classList.add('text-white');
+                        });
+                    }
+                });
+            }
+
+            initParticles() {
+                const createParticle = () => {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    particle.style.left = Math.random() * 100 + '%';
+                    particle.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                    particle.style.opacity = Math.random();
+                    
+                    const container = document.getElementById('particleContainer');
+                    if (container) {
+                        container.appendChild(particle);
+                        setTimeout(() => particle.remove(), 5000);
+                    }
+                };
+                
+                setInterval(createParticle, 300);
+            }
+
+            initTypingAnimation() {
+                const typingElement = document.getElementById('typingText');
+                if (!typingElement) return;
+                
+                const texts = ['hogar perfecto', 'inversión ideal', 'futuro brillante'];
+                let textIndex = 0;
+                let charIndex = 0;
+                let isDeleting = false;
+                
+                const typeWriter = () => {
+                    const currentText = texts[textIndex];
+                    
+                    if (isDeleting) {
+                        typingElement.textContent = currentText.substring(0, charIndex - 1);
+                        charIndex--;
+                    } else {
+                        typingElement.textContent = currentText.substring(0, charIndex + 1);
+                        charIndex++;
+                    }
+                    
+                    let typeSpeed = isDeleting ? 50 : 100;
+                    
+                    if (!isDeleting && charIndex === currentText.length) {
+                        typeSpeed = 2000;
+                        isDeleting = true;
+                    } else if (isDeleting && charIndex === 0) {
+                        isDeleting = false;
+                        textIndex = (textIndex + 1) % texts.length;
+                        typeSpeed = 500;
+                    }
+                    
+                    setTimeout(typeWriter, typeSpeed);
+                };
+                
+                setTimeout(typeWriter, 1000);
+            }
+
+            initIntersectionObserver() {
+                const observerOptions = {
+                    threshold: 0.1,
+                    rootMargin: '0px 0px -50px 0px'
+                };
+
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('revealed');
+                        }
+                    });
+                }, observerOptions);
+
+                document.querySelectorAll('.section-reveal').forEach(section => {
+                    observer.observe(section);
+                });
+            }
+        }
+
+        // Initialize the application
+        window.addEventListener('DOMContentLoaded', () => {
+            window.karsebApp = new KarsebApp();
+            
+            // Smooth scrolling for navigation links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+        });
+
+        // Expose static methods globally for onclick handlers
+        window.KarsebApp = KarsebApp;
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'976d84b0d5b647a7',t:'MTc1NjQ4NTkyMS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
